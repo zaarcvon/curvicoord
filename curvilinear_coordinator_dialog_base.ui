@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>478</width>
-    <height>700</height>
+    <width>505</width>
+    <height>650</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
-     <x>9</x>
-     <y>9</y>
-     <width>461</width>
-     <height>521</height>
+     <x>5</x>
+     <y>0</y>
+     <width>490</width>
+     <height>511</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -35,13 +35,13 @@
     <attribute name="title">
      <string>Coordinate transformation</string>
     </attribute>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="b_Bounding">
      <property name="geometry">
       <rect>
-       <x>7</x>
+       <x>5</x>
        <y>50</y>
-       <width>441</width>
-       <height>81</height>
+       <width>490</width>
+       <height>80</height>
       </rect>
      </property>
      <property name="title">
@@ -51,78 +51,78 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
-        <width>421</width>
-        <height>22</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="bounding_polygone_generate_button">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>360</x>
-        <y>50</y>
-        <width>71</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Generate</string>
-      </property>
-      <property name="checkable">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_4">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>91</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Or generate:</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="bounding_polygone_alpha_textfield">
-      <property name="geometry">
-       <rect>
-        <x>280</x>
-        <y>50</y>
-        <width>41</width>
+        <y>25</y>
+        <width>250</width>
         <height>20</height>
        </rect>
       </property>
-      <property name="text">
-       <string>1</string>
-      </property>
      </widget>
-     <widget class="QLabel" name="label_5">
+     <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>240</x>
-        <y>53</y>
-        <width>41</width>
-        <height>16</height>
+        <x>270</x>
+        <y>20</y>
+        <width>200</width>
+        <height>50</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Alpha</string>
+      <property name="title">
+       <string>Generate new polygone</string>
       </property>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>25</y>
+         <width>41</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Alpha</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="bounding_polygone_alpha_textfield">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>20</y>
+         <width>30</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="bounding_polygone_generate_button">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>20</y>
+         <width>70</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Generate</string>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+      </widget>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="a_Measurements">
      <property name="geometry">
       <rect>
-       <x>7</x>
+       <x>5</x>
        <y>0</y>
-       <width>441</width>
-       <height>51</height>
+       <width>490</width>
+       <height>50</height>
       </rect>
      </property>
      <property name="title">
@@ -132,20 +132,26 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
-        <width>421</width>
-        <height>22</height>
+        <y>25</y>
+        <width>465</width>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify initial file with measurements&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="whatsThis">
+       <string/>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="QGroupBox" name="c_Centerline">
      <property name="geometry">
       <rect>
-       <x>7</x>
-       <y>140</y>
-       <width>441</width>
-       <height>81</height>
+       <x>5</x>
+       <y>130</y>
+       <width>490</width>
+       <height>80</height>
       </rect>
      </property>
      <property name="title">
@@ -155,522 +161,586 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
-        <width>421</width>
-        <height>22</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_7">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>91</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Or generate:</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="centerline_smoothness_textfield">
-      <property name="geometry">
-       <rect>
-        <x>280</x>
-        <y>50</y>
-        <width>41</width>
+        <y>25</y>
+        <width>250</width>
         <height>20</height>
        </rect>
       </property>
-      <property name="text">
-       <string>0.25</string>
-      </property>
      </widget>
-     <widget class="QLabel" name="label_8">
+     <widget class="QGroupBox" name="groupBox_2">
       <property name="geometry">
        <rect>
-        <x>212</x>
-        <y>52</y>
-        <width>71</width>
-        <height>16</height>
+        <x>270</x>
+        <y>20</y>
+        <width>200</width>
+        <height>50</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Smoothness</string>
+      <property name="title">
+       <string>Generate new centerline</string>
       </property>
-     </widget>
-     <widget class="QPushButton" name="centerline_generate_button">
-      <property name="geometry">
-       <rect>
-        <x>360</x>
-        <y>50</y>
-        <width>71</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Generate</string>
-      </property>
+      <widget class="QPushButton" name="centerline_generate_button">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>20</y>
+         <width>70</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Generate</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="centerline_smoothness_textfield">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>20</y>
+         <width>30</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>0.25</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_8">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>25</y>
+         <width>70</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Smoothness</string>
+       </property>
+      </widget>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_7">
+    <widget class="QGroupBox" name="d_Gridding">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>220</y>
-       <width>441</width>
-       <height>161</height>
+       <x>5</x>
+       <y>210</y>
+       <width>490</width>
+       <height>140</height>
       </rect>
      </property>
      <property name="title">
       <string>4. Regular points grid</string>
      </property>
-     <widget class="QLabel" name="label_15">
+     <widget class="QgsMapLayerComboBox" name="regular_grid_input">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>50</y>
-        <width>41</width>
-        <height>16</height>
+        <y>25</y>
+        <width>250</width>
+        <height>20</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Extent</string>
-      </property>
      </widget>
-     <widget class="QLabel" name="label_16">
+     <widget class="QGroupBox" name="groupBox_3">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>270</x>
+        <y>20</y>
+        <width>200</width>
+        <height>115</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Generate new grid</string>
+      </property>
+      <widget class="QLabel" name="label_15">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>41</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Extent</string>
+       </property>
+      </widget>
+      <widget class="QgsExtentWidget" name="Extent_Widget" native="true">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>20</y>
+         <width>140</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="PointSpacing_LineEdit">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>50</y>
+         <width>30</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_16">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>131</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Point spacing (meters):</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="DeletePointsOutside_CheckBox">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>70</y>
+         <width>250</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Delete points outside  polygone</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="CreateGrid_PushButton">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>90</y>
+         <width>70</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Generate</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="e_Transformation">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>350</y>
+       <width>490</width>
+       <height>130</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>5. Transformation</string>
+     </property>
+     <widget class="QPushButton" name="transform_button">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
         <y>100</y>
-        <width>131</width>
-        <height>16</height>
+        <width>70</width>
+        <height>25</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
-       <string>Point spacing (meters):</string>
+       <string>Transform</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="PointSpacing_LineEdit">
+     <widget class="QgsFileWidget" name="OutputMeasurements_Widget" native="true">
       <property name="geometry">
        <rect>
         <x>140</x>
-        <y>100</y>
-        <width>61</width>
-        <height>22</height>
+        <y>25</y>
+        <width>330</width>
+        <height>20</height>
        </rect>
       </property>
-      <property name="text">
-       <string>1</string>
+      <property name="filter" stdset="0">
+       <string>*.shp</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="DeletePointsOutside_CheckBox">
+     <widget class="QRadioButton" name="SN_Coordinates_RadioButton">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>130</y>
-        <width>251</width>
+        <y>90</y>
+        <width>190</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>Delete points outside bounding polygone</string>
+       <string>Coordinates - SN, attributes - XY</string>
+      </property>
+     </widget>
+     <widget class="QgsFileWidget" name="OutputGrid_Widget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>50</y>
+        <width>390</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="filter" stdset="0">
+       <string>*.shp</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_18">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>25</y>
+        <width>130</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Output measurements:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_17">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>70</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Output grid:</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="XY_Coordinates_RadioButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>191</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Coordinates - XY, attributes - SN</string>
       </property>
       <property name="checked">
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QPushButton" name="CreateGrid_PushButton">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>130</y>
-        <width>75</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Create grid</string>
-      </property>
-     </widget>
-     <widget class="QgsMapLayerComboBox" name="regular_grid_input">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>421</width>
-        <height>22</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QgsExtentWidget" name="Extent_Widget" native="true">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>70</y>
-        <width>421</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
     </widget>
-    <widget class="QPushButton" name="transform_button">
-     <property name="geometry">
-      <rect>
-       <x>370</x>
-       <y>450</y>
-       <width>75</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Transform</string>
-     </property>
-    </widget>
-    <widget class="QgsFileWidget" name="OutputMeasurements_Widget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>390</y>
-       <width>291</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="filter" stdset="0">
-      <string>*.shp</string>
-     </property>
-	 <property name="storageMode">
-      <enum>QgsFileWidget::SaveFile</enum>
-     </property>
-    </widget>
-    <widget class="QgsFileWidget" name="OutputGrid_Widget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>420</y>
-       <width>341</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="filter" stdset="0">
-      <string>*.shp</string>
-     </property>
-	 <property name="storageMode">
-      <enum>QgsFileWidget::SaveFile</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_17">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>420</y>
-       <width>71</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Output grid:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_18">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>390</y>
-       <width>131</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Output measurements:</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="XY_Coordinates_RadioButton">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>440</y>
-       <width>301</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Coordinates - XY, attributes - SN</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="SN_Coordinates_RadioButton">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>460</y>
-       <width>211</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Coordinates - SN, attributes - XY</string>
-     </property>
-    </widget>
-    <zorder>groupBox_2</zorder>
-    <zorder>groupBox</zorder>
-    <zorder>groupBox_3</zorder>
-    <zorder>groupBox_7</zorder>
-    <zorder>transform_button</zorder>
-    <zorder>OutputMeasurements_Widget</zorder>
-    <zorder>OutputGrid_Widget</zorder>
-    <zorder>label_17</zorder>
-    <zorder>label_18</zorder>
-    <zorder>XY_Coordinates_RadioButton</zorder>
-    <zorder>SN_Coordinates_RadioButton</zorder>
+    <zorder>a_Measurements</zorder>
+    <zorder>b_Bounding</zorder>
+    <zorder>c_Centerline</zorder>
+    <zorder>d_Gridding</zorder>
+    <zorder>e_Transformation</zorder>
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
      <string>Interpolation</string>
     </attribute>
-    <widget class="QGroupBox" name="groupBox_6">
+    <widget class="QLabel" name="label_19">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>10</y>
-       <width>451</width>
-       <height>561</height>
+       <x>20</x>
+       <y>40</y>
+       <width>71</width>
+       <height>16</height>
       </rect>
      </property>
-     <property name="title">
-      <string>5. Interpolation</string>
+     <property name="text">
+      <string>Point grid:</string>
      </property>
-     <widget class="QTabWidget" name="tabWidget_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>70</y>
-        <width>431</width>
-        <height>291</height>
-       </rect>
-      </property>
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <widget class="QWidget" name="tab_3">
-       <attribute name="title">
-        <string>IDW</string>
-       </attribute>
-       <widget class="QRadioButton" name="PointsWithinDistance_RadioButton">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>110</y>
-          <width>211</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>All points within searching distance</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="Power_LineEdit">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>421</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>2</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_9">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>131</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Power</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="SearchDistance_LineEdit">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>80</y>
-          <width>411</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>1000</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_10">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>160</y>
-          <width>61</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Minimum</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_11">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>60</y>
-          <width>131</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Search distance</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="MaximumNearest_RadioButton">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>130</y>
-          <width>211</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Maximum number of nearest points</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="MinimumPoints_LineEdit">
-        <property name="geometry">
-         <rect>
-          <x>70</x>
-          <y>160</y>
-          <width>41</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="MaximumPoints_LineEdit">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>160</y>
-          <width>41</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_12">
-        <property name="geometry">
-         <rect>
-          <x>120</x>
-          <y>160</y>
-          <width>61</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Maximum</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="Elliptical_CheckBox">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>190</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Elliptical IDW</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_13">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>210</y>
-          <width>61</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Epsilon</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="Epsilon_LineEdit">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>230</y>
-          <width>411</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>1</string>
-        </property>
-       </widget>
+    </widget>
+    <widget class="QgsFileWidget" name="InputGrid_Widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>40</y>
+       <width>391</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="filter" stdset="0">
+      <string>*.shp</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_20">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>130</width>
+       <height>15</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Measurements:</string>
+     </property>
+    </widget>
+    <widget class="QgsFileWidget" name="InputMeasurements_Widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>10</y>
+       <width>361</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="filter" stdset="0">
+      <string>*.shp</string>
+     </property>
+    </widget>
+    <widget class="QTabWidget" name="tabWidget_2">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>470</width>
+       <height>291</height>
+      </rect>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>IDW</string>
+      </attribute>
+      <widget class="QRadioButton" name="PointsWithinDistance_RadioButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>110</y>
+         <width>211</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>All points within searching distance</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
       </widget>
-      <widget class="QWidget" name="tab_5">
-       <attribute name="title">
-        <string>RBF (TPS)</string>
-       </attribute>
+      <widget class="QLineEdit" name="Power_LineEdit">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>451</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_9">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>131</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Power</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="SearchDistance_LineEdit">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>80</y>
+         <width>451</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>1000</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_10">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>160</y>
+         <width>61</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Minimum</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_11">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>131</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Search distance</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="MaximumNearest_RadioButton">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>130</y>
+         <width>211</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Maximum number of nearest points</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="MinimumPoints_LineEdit">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>160</y>
+         <width>41</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="MaximumPoints_LineEdit">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>160</y>
+         <width>41</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>15</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_12">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>160</y>
+         <width>61</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Maximum</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="Elliptical_CheckBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>190</y>
+         <width>101</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Elliptical IDW</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_13">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>190</y>
+         <width>61</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Epsilon</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="Epsilon_LineEdit">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>190</y>
+         <width>40</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>1</string>
+       </property>
       </widget>
      </widget>
-     <widget class="QPushButton" name="Interpolate_PushButton">
-      <property name="geometry">
-       <rect>
-        <x>360</x>
-        <y>360</y>
-        <width>75</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Interpolate</string>
-      </property>
-     </widget>
-     <widget class="QgsMapLayerComboBox" name="regular_grid_interp_input">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>40</y>
-        <width>421</width>
-        <height>22</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_14">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>111</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Regular points grid:</string>
-      </property>
-     </widget>
+    </widget>
+    <widget class="QPushButton" name="Interpolate_PushButton">
+     <property name="geometry">
+      <rect>
+       <x>390</x>
+       <y>420</y>
+       <width>75</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Interpolate</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_6">
@@ -682,10 +752,10 @@
   <widget class="QTextBrowser" name="log_textbrowser">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>530</y>
-     <width>460</width>
-     <height>161</height>
+     <x>5</x>
+     <y>509</y>
+     <width>490</width>
+     <height>131</height>
     </rect>
    </property>
    <property name="sizePolicy">

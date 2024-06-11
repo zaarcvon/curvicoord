@@ -27,6 +27,7 @@ from qgis.PyQt.QtWidgets import QAction
 from qgis.core import QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsField
 from qgis import processing
 from PyQt5.QtCore import QVariant
+import geopandas as gpd
 
 import time
 # Initialize Qt resources from file resources.py
@@ -34,6 +35,7 @@ from .resources import *
 # Import the code for the dialog
 from .curvilinear_coordinator_dialog import CurviCoordDialog
 import os.path
+import numpy as np
 
 
 class CurviCoord:
@@ -411,6 +413,9 @@ class CurviCoord:
         pts_riverCS = QgsVectorLayer(output_measurements_filename, "track_RCS", "ogr")
         QgsProject.instance().addMapLayer(pts_riverCS)
 
+        self.dlg.InputMeasurements_Widget.setFilePath(output_measurements_filename)
+        self.dlg.InputGrid_Widget.setFilePath(output_grid_filename)
+
     def create_grid(self):
         self.dlg.CreateGrid_PushButton.setEnabled(False)
         self.log_list.append('Create regular point grid......')
@@ -432,12 +437,11 @@ class CurviCoord:
             pass
         self.dlg.CreateGrid_PushButton.setEnabled(True)
 
-    def idw(row, id_power=2, s_radious=500, aniso_ratio=1):
-        """regression_idw is responsible for mathmatic calculation of idw interpolation with regression as a covariable."""
-        calc_arr = np.zeros(shape=(len(track), 5))  # create an empty array shape of (total no. of observation * 5)
-        calc_arr[:, 0] = track['S']  # First column will be Longitude of known data points.
-        calc_arr[:, 1] = track['N']  # Second column will be Latitude of known data points.
-        calc_arr[:, 2] = track['ELEVATION']
+    def idw(self, row, id_power=2, min_points = 1, max_points=500, aniso_ratio=1):
+        calc_arr = np.zeros(shape=(len(self.measurements), 5))  # create an empty array shape of (total no. of observation * 5)
+        calc_arr[:, 0] = self.measurements['S']  # First column will be Longitude of known data points.
+        calc_arr[:, 1] = self.measurements['N']  # Second column will be Latitude of known data points.
+        calc_arr[:, 2] = self.measurements['ELEVATION']
 
         # Fifth column is weight value from idw formula " w = 1 / (d(x, x_i)^power + 1)"
         # >> constant 1 is to prevent int divide by zero when distance is zero.
@@ -446,29 +450,37 @@ class CurviCoord:
 
         # Sort the array in ascendin order based on column_5 (weight) "np.argsort(calc_arr[:,4])"
         # and exclude all the rows outside of search radious "[ - s_radious :, :]"
-        calc_arr = calc_arr[np.argsort(calc_arr[:, 3])][-s_radious:, :]
+        calc_arr = calc_arr[np.argsort(calc_arr[:, 3])][-int(max_points):, :]
 
         # Sixth column is multiplicative product of inverse distant weight and actual value.
-        calc_arr[:, 4] = calc_arr[:, 2] * sub_arr[:, 3]
+        calc_arr[:, 4] = calc_arr[:, 2] * calc_arr[:, 3]
         # Divide sum of weighted value by sum of weights to get IDW interpolation.
-        idw = calc_arr[:, 4].sum() / calc_arr[:, 3].sum()
+        if len(calc_arr)>min_points:
+            idw = calc_arr[:, 4].sum() / calc_arr[:, 3].sum()
+        else:
+            idw = np.NaN
         return idw
 
     def interpolate(self):
+
         self.dlg.Interpolate_PushButton.setEnabled(False)
         self.log_list.append('Interpolate points')
         self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
-        grid_name = self.dlg.regular_grid_interp_input.currentText()
-        selectedmeasurements  = QgsProject.instance().mapLayersByName(grid_name)[0]
-        self.log_list.append( selectedmeasurements)
-        self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
 
-        power = float(self.dlg.Power_LineEdit.text())
-        search_distance = float(self.dlg.SearcDistance_LineEdit.text())
+        grid_filename = self.dlg.InputGrid_Widget.filePath()
+        measurements_filename = self.dlg.InputMeasurements_Widget.filePath()
+        id_power = float(self.dlg.Power_LineEdit.text())
+        #search_distance = float(self.dlg.SearcDistance_LineEdit.text())
         min_points = float(self.dlg.MinimumPoints_LineEdit.text())
         max_points = float(self.dlg.MaximumPoints_LineEdit.text())
         elliptical_idw = self.dlg.Elliptical_CheckBox.isChecked()
-        epsilon = float(self.dlg.Epsilon_LineEdit.text())
+        if elliptical_idw == True:
+            epsilon = float(self.dlg.Epsilon_LineEdit.text())
+        else:
+            epsilon = 1
+        self.measurements = gpd.read_file(measurements_filename)
+        grid = gpd.read_file(grid_filename)
 
-        track = gpd.read_file(track_RCS)
+        grid['ELEV'] = grid.apply(self.idw, axis=1, args=(id_power, min_points, max_points, epsilon))
+        grid.to_file(grid_filename)
         self.dlg.Interpolate_PushButton.setEnabled(True)
