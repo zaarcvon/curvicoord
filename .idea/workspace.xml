@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="15427450-eeac-4546-b2fe-51d1b164adc8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/curvilinear_coordinator.py" beforeDir="false" afterPath="$PROJECT_DIR$/curvilinear_coordinator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/curvilinear_coordinator_dialog_base.ui" beforeDir="false" afterPath="$PROJECT_DIR$/curvilinear_coordinator_dialog_base.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

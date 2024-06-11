@@ -6,14 +6,14 @@
 name=Curvilinear Coordinator
 qgisMinimumVersion=3.0
 description=Plugin for river data conversion from Cartesian to curvilinear orthogonal system
-version=0.1
-author=Sergei Freiman
+version=0.9
+author=Sergei Freiman, Pavel Terskii
 email=freimansgy@gmail.com
 
 about=Plugin for conversion of river data (bathymetry, concentrations etc.) from Cartesian to Curvilinear coordinate system. It allows to perform interpolation in Curvilinear CS that improves accuracy significantly
 
 tracker=http://bugs
-repository=http://repo
+repository=https://github.com/zaarcvon/curvicoord
 # End of mandatory metadata
 
 # Recommended items:
@@ -25,11 +25,11 @@ hasProcessingProvider=no
 # Tags are comma separated with spaces allowed
 tags=python
 
-homepage=http://homepage
+homepage=https://github.com/zaarcvon/curvicoord/wiki
 category=Plugins
 icon=icon.png
 # experimental flag
-experimental=True
+experimental=False
 
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
