@@ -29,7 +29,7 @@
     </sizepolicy>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -383,7 +383,7 @@
      </widget>
      <widget class="QRadioButton" name="SN_Coordinates_RadioButton">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -726,8 +726,8 @@
     <widget class="QPushButton" name="Interpolate_PushButton">
      <property name="geometry">
       <rect>
-       <x>390</x>
-       <y>420</y>
+       <x>400</x>
+       <y>450</y>
        <width>75</width>
        <height>25</height>
       </rect>

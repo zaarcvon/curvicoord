@@ -23,7 +23,7 @@
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
-from qgis.core import QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsField
+from qgis.core import QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsField, QgsGeometry, QgsPointXY
 from qgis import processing
 from PyQt5.QtCore import QVariant
 import geopandas as gpd
@@ -199,10 +199,13 @@ class CurviCoord:
             self.dlg.transform_button.clicked.connect(self.transform)
             self.dlg.CreateGrid_PushButton.clicked.connect(self.create_grid)
             self.dlg.Interpolate_PushButton.clicked.connect(self.interpolate)
+            self.dlg.SN_Coordinates_RadioButton.toggled.connect(self.SN_coordinates_output)
+            self.dlg.XY_Coordinates_RadioButton.toggled.connect(self.XY_coordinates_output)
         # Fetch the currently loaded layer
         self.bounding_polygone_generate_counts = 0
         self.river_centerline_generate_counts = 0
         self.log_list = []
+        self.output_format = 'XY'
 
         # show the dialog
         self.dlg.show()
@@ -341,21 +344,23 @@ class CurviCoord:
                 N_coord = -feature['N']
             else:
                 N_coord = -9999
-
                 check_outlined_points += 1
+                pts_riverCS.deleteFeature(feature.id())
+
             provider.changeAttributeValues({feature.id(): {provider.fieldNameMap()['N']: N_coord}})
 
         if check_outlined_points > 0:
             self.log_list.append(
                 'Warning! {} track points are outside of the river polygone!'.format(check_outlined_points))
-            self.log_list.append('If this is unintentional try to extend polygone (buffer) and run again')
+            self.log_list.append('These points have been deleted')
+            self.log_list.append('If this was not your purpose, try to extend polygone (buffer) and run again')
             self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
         pts_riverCS.commitChanges()
 
         pts_riverCS.setName('track_RCS')
 
 
-        self.log_list.append('Measurment points ransformation completed!')
+        self.log_list.append('Measurment points transformation completed!')
         self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
 
         regular_grid = processing.run("native:joinattributesbylocation", {'INPUT': selected_regular_grid, 'PREDICATE': [5],
@@ -371,7 +376,7 @@ class CurviCoord:
                                                                'OUTPUT': 'TEMPORARY_OUTPUT'})['OUTPUT']
 
         regular_grid = processing.run("native:retainfields",
-                                      {'INPUT': regular_grid, 'FIELDS': ['distance', 'distance_2', 'Side', 'ELEVATION'],
+                                      {'INPUT': regular_grid, 'FIELDS': ['distance', 'distance_2', 'Side'],
                                        'OUTPUT': 'TEMPORARY_OUTPUT'})['OUTPUT']
         regular_grid = processing.run("native:renametablefield",
                                       {'INPUT': regular_grid, 'FIELD': 'distance', 'NEW_NAME': 'S',
@@ -382,35 +387,60 @@ class CurviCoord:
 
         provider = regular_grid.dataProvider()
         check_outlined_points = 0
-        q = 0
+        regular_grid.startEditing()
+
         for feature in regular_grid.getFeatures():
             side = feature['Side']
             if side == 'left':
                 N_coord = feature['N']
             elif side == 'right':
-                q += 1
                 N_coord = -feature['N']
             else:
                 N_coord = -9999
-                regular_grid.deleteFeature(feature.id())
                 check_outlined_points += 1
-            if N_coord != -9999:
-                provider.changeAttributeValues({feature.id(): {provider.fieldNameMap()['N']: N_coord}})
+                regular_grid.deleteFeature(feature.id())
+            provider.changeAttributeValues({feature.id(): {provider.fieldNameMap()['N']: N_coord}})
+
         if check_outlined_points > 0:
-            print('{} grid points are outside of the river polygone and therefore deleted!'.format(
-                check_outlined_points))
-            print(q)
+            self.log_list.append(
+                'Warning! {} grid points are outside of the river polygone!'.format(check_outlined_points))
+            if self.dlg.Elliptical_CheckBox.isChecked()== True:
+                self.log_list.append('These points have been deleted')
+            self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
+
         regular_grid.commitChanges()
         regular_grid.setName('grid_RCS')
 
-        _writer = QgsVectorFileWriter.writeAsVectorFormat(regular_grid, output_grid_filename, 'utf-8', driverName='ESRI Shapefile')
-        regular_grid =  QgsVectorLayer(output_grid_filename, "grid_RCS", "ogr")
-        QgsProject.instance().addMapLayer(regular_grid)
 
+        if self.output_format == 'SN':
+            for lyr in [regular_grid, pts_riverCS]:
 
-        _writer = QgsVectorFileWriter.writeAsVectorFormat(pts_riverCS, output_measurements_filename, 'utf-8', driverName='ESRI Shapefile')
+                lyr.startEditing()
+                lyr.dataProvider().addAttributes([QgsField('X', QVariant.Double),QgsField('Y', QVariant.Double)])
+                lyr.updateFields()
+                x_index = lyr.fields().indexFromName('X')
+                y_index = lyr.fields().indexFromName('Y')
+                for feature in lyr.getFeatures():
+                    geom = feature.geometry()
+                    lyr.changeAttributeValue(feature.id(), x_index, geom.asPoint().x())
+                    lyr.changeAttributeValue(feature.id(), y_index, geom.asPoint().y())
+
+                    lyr.changeGeometry(feature.id(), QgsGeometry.fromPointXY(QgsPointXY(feature['S'],feature['N'])))
+
+                lyr.commitChanges()
+
+        settings = QgsVectorFileWriter.SaveVectorOptions()
+        settings.driverName = "ESRI Shapefile"
+        settings.fileEncoding = 'UTF-8'
+        _writer = QgsVectorFileWriter.writeAsVectorFormatV3(regular_grid, output_grid_filename,
+                                                            QgsProject.instance().transformContext(), settings)
+        _writer = QgsVectorFileWriter.writeAsVectorFormatV3(pts_riverCS, output_measurements_filename,
+                                                            QgsProject.instance().transformContext(), settings)
         pts_riverCS = QgsVectorLayer(output_measurements_filename, "track_RCS", "ogr")
         QgsProject.instance().addMapLayer(pts_riverCS)
+
+        regular_grid =  QgsVectorLayer(output_grid_filename, "grid_RCS", "ogr")
+        QgsProject.instance().addMapLayer(regular_grid)
 
         self.dlg.InputMeasurements_Widget.setFilePath(output_measurements_filename)
         self.dlg.InputGrid_Widget.setFilePath(output_grid_filename)
@@ -437,27 +467,26 @@ class CurviCoord:
         self.dlg.CreateGrid_PushButton.setEnabled(True)
 
     def idw(self, row, id_power=2, min_points = 1, max_points=500, aniso_ratio=1):
-        calc_arr = np.zeros(shape=(len(self.measurements), 5))  # create an empty array shape of (total no. of observation * 5)
+        calc_arr = np.zeros(shape=(len(self.measurements), 5))  # create an empty array shape of (total no. of observation * 4)
         calc_arr[:, 0] = self.measurements['S']  # First column will be Longitude of known data points.
         calc_arr[:, 1] = self.measurements['N']  # Second column will be Latitude of known data points.
         calc_arr[:, 2] = self.measurements['ELEVATION']
 
-        # Fifth column is weight value from idw formula " w = 1 / (d(x, x_i)^power + 1)"
+        # Weight value from idw formula " w = 1 / (d(x, x_i)^power + 1)"
         # >> constant 1 is to prevent int divide by zero when distance is zero.
         calc_arr[:, 3] = 1 / (np.sqrt(
-            aniso_ratio * (calc_arr[:, 0] - row['S']) ** 2 + (calc_arr[:, 1] - row['N']) ** 2) ** id_power + 1)
+            (1/aniso_ratio) * (calc_arr[:, 0] - row['S']) ** 2 + (calc_arr[:, 1] - row['N']) ** 2) ** id_power + 1)
 
-        # Sort the array in ascendin order based on column_5 (weight) "np.argsort(calc_arr[:,4])"
-        # and exclude all the rows outside of search radious "[ - s_radious :, :]"
-        calc_arr = calc_arr[np.argsort(calc_arr[:, 3])][-int(max_points):, :]
+        # Sort the array in ascending order based on weight "np.argsort(calc_arr[:,4])"
+        calc_arr = calc_arr[np.argsort(calc_arr[:, 3])][-int(max_points):]
 
-        # Sixth column is multiplicative product of inverse distant weight and actual value.
+        # 4 column is multiplicative product of inverse distant weight and actual value.
         calc_arr[:, 4] = calc_arr[:, 2] * calc_arr[:, 3]
         # Divide sum of weighted value by sum of weights to get IDW interpolation.
-        if len(calc_arr)>min_points:
-            idw = calc_arr[:, 4].sum() / calc_arr[:, 3].sum()
-        else:
-            idw = np.NaN
+        #if len(calc_arr)>min_points:
+        idw = calc_arr[:, 4].sum() / calc_arr[:, 3].sum()
+        #else:
+        #    idw = np.NaN
         return idw
 
     def interpolate(self):
@@ -483,3 +512,9 @@ class CurviCoord:
         grid['ELEV'] = grid.apply(self.idw, axis=1, args=(id_power, min_points, max_points, epsilon))
         grid.to_file(grid_filename)
         self.dlg.Interpolate_PushButton.setEnabled(True)
+
+    def SN_coordinates_output(self):
+        self.output_format = 'SN'
+
+    def XY_coordinates_output(self):
+        self.output_format = 'XY'
