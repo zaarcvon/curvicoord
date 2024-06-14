@@ -23,7 +23,7 @@
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
-from qgis.core import QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsField, QgsGeometry, QgsPointXY
+from qgis.core import QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsField, QgsGeometry, QgsPointXY, QgsMapLayerProxyModel
 from qgis import processing
 from PyQt5.QtCore import QVariant
 import geopandas as gpd
@@ -202,6 +202,10 @@ class CurviCoord:
             self.dlg.SN_Coordinates_RadioButton.toggled.connect(self.SN_coordinates_output)
             self.dlg.XY_Coordinates_RadioButton.toggled.connect(self.XY_coordinates_output)
         # Fetch the currently loaded layer
+        self.dlg.measurements_input.setFilters(QgsMapLayerProxyModel.PointLayer)
+        self.dlg.boundary_polygone_input.setFilters(QgsMapLayerProxyModel.PolygonLayer)
+        self.dlg.centerline_input.setFilters(QgsMapLayerProxyModel.LineLayer)
+        self.dlg.regular_grid_input.setFilters(QgsMapLayerProxyModel.PointLayer)
         self.bounding_polygone_generate_counts = 0
         self.river_centerline_generate_counts = 0
         self.log_list = []
@@ -306,7 +310,7 @@ class CurviCoord:
         self.log_list.append('Calculating S coordinate.....')
         self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
         along_centerline_points = processing.run("native:pointsalonglines", {'INPUT': selectedcenterline,
-                                                            'DISTANCE': 0.5, 'START_OFFSET': 0,
+                                                            'DISTANCE': 0.1, 'START_OFFSET': 0,
                                                             'END_OFFSET': 0,
                                                             'OUTPUT': 'TEMPORARY_OUTPUT'})['OUTPUT']
 
