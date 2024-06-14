@@ -25,7 +25,7 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 from qgis.core import QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsField, QgsGeometry, QgsPointXY, QgsMapLayerProxyModel
 from qgis import processing
-from PyQt5.QtCore import QVariant
+from PyQt5.QtCore import QVariant, Qt
 import geopandas as gpd
 
 import time
@@ -206,6 +206,9 @@ class CurviCoord:
         self.dlg.boundary_polygone_input.setFilters(QgsMapLayerProxyModel.PolygonLayer)
         self.dlg.centerline_input.setFilters(QgsMapLayerProxyModel.LineLayer)
         self.dlg.regular_grid_input.setFilters(QgsMapLayerProxyModel.PointLayer)
+
+        self.dlg.setWindowFlags(Qt.WindowStaysOnTopHint)
+
         self.bounding_polygone_generate_counts = 0
         self.river_centerline_generate_counts = 0
         self.log_list = []
