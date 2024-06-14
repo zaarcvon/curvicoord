@@ -4,6 +4,9 @@
 </h1>
 <h4 align="center">A QGIS Plugin for data transformation from Cartesian to Curvilinear coordinate system</h4>
 
+![ezgif com-optimize](https://github.com/zaarcvon/curvicoord/assets/34241342/15d3362b-4fbd-4b2a-acb3-ab851ea81ff3)
+
+
 <p align="center">
   <a href="#key-features">Installation</a> •
   <a href="#download">Documentation</a> •
