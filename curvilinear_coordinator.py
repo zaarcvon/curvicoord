@@ -364,9 +364,6 @@ class CurviCoord:
             self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
         pts_riverCS.commitChanges()
 
-        pts_riverCS.setName('track_RCS')
-
-
         self.log_list.append('Measurment points transformation completed!')
         self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
 
@@ -416,7 +413,6 @@ class CurviCoord:
             self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
 
         regular_grid.commitChanges()
-        regular_grid.setName('grid_RCS')
 
 
         if self.output_format == 'SN':
@@ -443,10 +439,12 @@ class CurviCoord:
                                                             QgsProject.instance().transformContext(), settings)
         _writer = QgsVectorFileWriter.writeAsVectorFormatV3(pts_riverCS, output_measurements_filename,
                                                             QgsProject.instance().transformContext(), settings)
-        pts_riverCS = QgsVectorLayer(output_measurements_filename, "track_RCS", "ogr")
+        layer_name = os.path.splitext(os.path.basename(output_measurements_filename))[0]
+        pts_riverCS = QgsVectorLayer(output_measurements_filename, layer_name, "ogr")
         QgsProject.instance().addMapLayer(pts_riverCS)
 
-        regular_grid =  QgsVectorLayer(output_grid_filename, "grid_RCS", "ogr")
+        layer_name = os.path.splitext(os.path.basename(output_grid_filename))[0]
+        regular_grid =  QgsVectorLayer(output_grid_filename, layer_name, "ogr")
         QgsProject.instance().addMapLayer(regular_grid)
 
         self.dlg.InputMeasurements_Widget.setFilePath(output_measurements_filename)
