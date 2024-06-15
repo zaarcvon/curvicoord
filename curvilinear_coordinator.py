@@ -24,6 +24,7 @@ from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 from qgis.core import QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsField, QgsGeometry, QgsPointXY, QgsMapLayerProxyModel
+from qgis.gui import QgsFileWidget
 from qgis import processing
 from PyQt5.QtCore import QVariant, Qt
 import geopandas as gpd
@@ -207,7 +208,11 @@ class CurviCoord:
         self.dlg.centerline_input.setFilters(QgsMapLayerProxyModel.LineLayer)
         self.dlg.regular_grid_input.setFilters(QgsMapLayerProxyModel.PointLayer)
 
+        #dialogue stay always on top
         self.dlg.setWindowFlags(Qt.WindowStaysOnTopHint)
+        #QgsFileWidget has mode Save instead of basic Open
+        self.dlg.OutputMeasurements_Widget.setStorageMode(QgsFileWidget.SaveFile)
+        self.dlg.OutputGrid_Widget.setStorageMode(QgsFileWidget.SaveFile)
 
         self.bounding_polygone_generate_counts = 0
         self.river_centerline_generate_counts = 0
