@@ -23,10 +23,11 @@
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
-from qgis.core import QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsField, QgsGeometry, QgsPointXY, QgsMapLayerProxyModel
+from qgis.core import QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsField, QgsGeometry, QgsPointXY, QgsMapLayerProxyModel, QgsMessageLog, Qgis
 from qgis.gui import QgsFileWidget
 from qgis import processing
 from PyQt5.QtCore import QVariant, Qt
+from qgis.utils import iface
 import geopandas as gpd
 
 import time
@@ -233,9 +234,8 @@ class CurviCoord:
             pass
 
     def generate_bounding_polygone(self):
+        QgsMessageLog.logMessage("Bounding polygone creation....", 'Messages', level=Qgis.Info)
         self.dlg.bounding_polygone_generate_button.setEnabled(False)
-        self.log_list.append('Create bounding polygone......')
-        self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
         QCoreApplication.processEvents()
         measurements_name = self.dlg.measurements_input.currentText()
         measurements_layer = QgsProject.instance().mapLayersByName(measurements_name)[0]
@@ -253,16 +253,14 @@ class CurviCoord:
 
 
         except ValueError:
-            self.log_list.append('Alpha should be a float value, abort....')
-            self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
+            iface.messageBar().pushMessage("Algorithm failed!", "Alpha should be a float value", level=Qgis.Critical, duration=10)
             pass
 
         self.dlg.bounding_polygone_generate_button.setEnabled(True)
 
     def generate_centerline(self):
         self.dlg.centerline_generate_button.setEnabled(False)
-        self.log_list.append('Create river centerline......')
-        self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
+        QgsMessageLog.logMessage("River centerline creation....", 'Messages', level=Qgis.Info)
         QCoreApplication.processEvents()
         smoothness = self.dlg.centerline_smoothness_textfield.text()
         try:
@@ -270,7 +268,7 @@ class CurviCoord:
             boundary_polygone_name = self.dlg.boundary_polygone_input.currentText()
             boundary_polygone_layer = QgsProject.instance().mapLayersByName(boundary_polygone_name)[0]
             river_centerline_filename = processing.run("grass7:v.voronoi.skeleton",
-                           {'input': boundary_polygone_layer, 'smoothness': 1.25, 'thin': -1, '-a': False, '-s': True,
+                           {'input': boundary_polygone_layer, 'smoothness': smoothness, 'thin': -1, '-a': False, '-s': True,
                             '-l': False, '-t': False,
                             'output': 'TEMPORARY OUTPUT', 'GRASS_REGION_PARAMETER': None,
                             'GRASS_SNAP_TOLERANCE_PARAMETER': -1, 'GRASS_MIN_AREA_PARAMETER': 0.0001,
@@ -280,8 +278,8 @@ class CurviCoord:
             river_centerline = QgsVectorLayer(river_centerline_filename, "River centerline v."+ str(self.river_centerline_generate_counts), "ogr")
             QgsProject.instance().addMapLayer(river_centerline)
         except ValueError:
-            self.log_list.append('Alpha should be a float value, abort....')
-            self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
+            iface.messageBar().pushMessage("Algorithm failed!", "Smoothness should be a float value", level=Qgis.Critical,
+                                           duration=10)
             pass
         self.dlg.centerline_generate_button.setEnabled(True)
 
@@ -301,7 +299,7 @@ class CurviCoord:
         output_measurements_filename = self.dlg.OutputMeasurements_Widget.filePath()
         output_grid_filename = self.dlg.OutputGrid_Widget.filePath()
 
-        self.log_list.append('Splitting the bounding polygone onto a left and right sides')
+        QgsMessageLog.logMessage("Splitting the bounding polygone onto a left and right sides", 'Messages', level=Qgis.Info)
         self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
 
         river_sides = processing.run("native:splitwithlines", {'INPUT': selectedpolygone,
@@ -315,13 +313,14 @@ class CurviCoord:
         river_sides.startEditing()
         river_sides_provider.changeAttributeValues({1: {0: 'right'}, 2: {0: 'left'}})
         river_sides.commitChanges()
-        self.log_list.append('Calculating S coordinate.....')
-        self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
+
+        QgsMessageLog.logMessage("Calculating S coordinate", 'Messages', level=Qgis.Info)
+
         along_centerline_points = processing.run("native:pointsalonglines", {'INPUT': selectedcenterline,
                                                             'DISTANCE': 0.1, 'START_OFFSET': 0,
                                                             'END_OFFSET': 0,
                                                             'OUTPUT': 'TEMPORARY_OUTPUT'})['OUTPUT']
-
+        QgsMessageLog.logMessage("Calculating N coordinate for input points", 'Messages', level=Qgis.Info)
         pts_riverCS = processing.run("native:joinbynearest", {'INPUT': selectedmeasurements,
                                                               'INPUT_2': along_centerline_points,
                                                               'FIELDS_TO_COPY': [], 'DISCARD_NONMATCHING': False,
@@ -332,7 +331,7 @@ class CurviCoord:
                                                                          'METHOD': 0, 'DISCARD_NONMATCHING': False,
                                                                          'PREFIX': '',
                                                                          'OUTPUT': 'TEMPORARY_OUTPUT'})['OUTPUT']
-
+        QgsMessageLog.logMessage("Performing attribute manipulation", 'Messages', level=Qgis.Info)
         # Dealing with column names
         pts_riverCS = processing.run("native:retainfields", {'INPUT': pts_riverCS,
                                                              'FIELDS': ['distance', 'distance_2', 'ELEVATION',
@@ -362,16 +361,12 @@ class CurviCoord:
             provider.changeAttributeValues({feature.id(): {provider.fieldNameMap()['N']: N_coord}})
 
         if check_outlined_points > 0:
-            self.log_list.append(
-                'Warning! {} track points are outside of the river polygone!'.format(check_outlined_points))
-            self.log_list.append('These points have been deleted')
-            self.log_list.append('If this was not your purpose, try to extend polygone (buffer) and run again')
-            self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
+            iface.messageBar().pushMessage("Warning!", '{} track points are outside of the river polygone! They have been deleted!'.format(check_outlined_points), level=Qgis.Warning,
+                                           duration=10)
         pts_riverCS.commitChanges()
 
-        self.log_list.append('Measurment points transformation completed!')
-        self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
-
+        QgsMessageLog.logMessage("Input points transformation completed successfully", 'Messages', level=Qgis.Info)
+        QgsMessageLog.logMessage("Calculating N coordinate for grid points", 'Messages', level=Qgis.Info)
         regular_grid = processing.run("native:joinattributesbylocation", {'INPUT': selected_regular_grid, 'PREDICATE': [5],
                                                                           'JOIN': river_sides, 'JOIN_FIELDS': [],
                                                                           'METHOD': 0, 'DISCARD_NONMATCHING': False,
