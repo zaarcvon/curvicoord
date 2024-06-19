@@ -33,4 +33,3 @@ In the plugin following python modules are used:
 ## License
 
 GNU GPL v.3
----
