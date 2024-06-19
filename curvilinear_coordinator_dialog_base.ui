@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>505</width>
-    <height>650</height>
+    <height>517</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -468,20 +468,20 @@
       <rect>
        <x>20</x>
        <y>40</y>
-       <width>71</width>
+       <width>91</width>
        <height>16</height>
       </rect>
      </property>
      <property name="text">
-      <string>Point grid:</string>
+      <string>Input grid:</string>
      </property>
     </widget>
     <widget class="QgsFileWidget" name="InputGrid_Widget" native="true">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>100</x>
        <y>40</y>
-       <width>391</width>
+       <width>371</width>
        <height>21</height>
       </rect>
      </property>
@@ -494,20 +494,20 @@
       <rect>
        <x>20</x>
        <y>10</y>
-       <width>130</width>
-       <height>15</height>
+       <width>71</width>
+       <height>16</height>
       </rect>
      </property>
      <property name="text">
-      <string>Measurements:</string>
+      <string>Input points:</string>
      </property>
     </widget>
     <widget class="QgsFileWidget" name="InputMeasurements_Widget" native="true">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>100</x>
        <y>10</y>
-       <width>361</width>
+       <width>371</width>
        <height>21</height>
       </rect>
      </property>
@@ -796,9 +796,13 @@ hr { height: 1px; border-width: 0; }
 li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Verdana','sans-serif'; color:#000000; background-color:#ffffff;&quot;&gt;Plugin for conversion of river data (bathymetry, concentrations etc.) from Cartesian to Curvilinear coordinate system. It allows to perform interpolation in Curvilinear CS that improves accuracy significantly&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Verdana','sans-serif'; color:#000000; background-color:#ffffff;&quot;&gt;Plugin for conversion of river data (bathymetry, concentrations etc.) from Cartesian to Curvilinear coordinate system and back. It allows to perform interpolation in Curvilinear CS that improves accuracy significantly.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Verdana','sans-serif'; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Verdana','sans-serif'; color:#000000; background-color:#ffffff;&quot;&gt;Main repository - https://github.com/zaarcvon/curvicoord&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Verdana','sans-serif'; color:#000000; background-color:#ffffff;&quot;&gt;Manual and FAQ - https://github.com/zaarcvon/curvicoord/wiki&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Verdana','sans-serif'; color:#000000; background-color:#ffffff;&quot;&gt;Questions and suggestions - by email or here: &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Verdana','sans-serif'; color:#000000; background-color:#ffffff;&quot;&gt;https://github.com/zaarcvon/curvicoord/discussions&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;License - GNU GPL v.3.0&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Authors - Sergei Freiman, Pavel Terskii&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;email - freimansgy@gmail.com&lt;/p&gt;
@@ -808,22 +812,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </property>
     </widget>
    </widget>
-  </widget>
-  <widget class="QTextBrowser" name="log_textbrowser">
-   <property name="geometry">
-    <rect>
-     <x>5</x>
-     <y>509</y>
-     <width>490</width>
-     <height>131</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
   </widget>
  </widget>
  <customwidgets>

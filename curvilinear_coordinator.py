@@ -234,6 +234,9 @@ class CurviCoord:
             pass
 
     def generate_bounding_polygone(self):
+        '''
+        wrapper for concavehull function
+        '''
         QgsMessageLog.logMessage("Bounding polygone creation....", 'Messages', level=Qgis.Info)
         self.dlg.bounding_polygone_generate_button.setEnabled(False)
         QCoreApplication.processEvents()
@@ -259,6 +262,9 @@ class CurviCoord:
         self.dlg.bounding_polygone_generate_button.setEnabled(True)
 
     def generate_centerline(self):
+        '''
+        wrapper for voronoi skeleton function
+        '''
         self.dlg.centerline_generate_button.setEnabled(False)
         QgsMessageLog.logMessage("River centerline creation....", 'Messages', level=Qgis.Info)
         QCoreApplication.processEvents()
@@ -284,6 +290,9 @@ class CurviCoord:
         self.dlg.centerline_generate_button.setEnabled(True)
 
     def transform(self):
+        '''
+        the main function for coordinate transformation
+        '''
         measurements_name = self.dlg.measurements_input.currentText()
         selectedmeasurements = QgsProject.instance().mapLayersByName(measurements_name)[0]
 
@@ -300,7 +309,6 @@ class CurviCoord:
         output_grid_filename = self.dlg.OutputGrid_Widget.filePath()
 
         QgsMessageLog.logMessage("Splitting the bounding polygone onto a left and right sides", 'Messages', level=Qgis.Info)
-        self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
 
         river_sides = processing.run("native:splitwithlines", {'INPUT': selectedpolygone,
                                                                'LINES': selectedcenterline,
@@ -309,7 +317,7 @@ class CurviCoord:
         river_sides_provider.deleteAttributes([i for i in range(len(river_sides.fields()))])
         river_sides_provider.addAttributes([QgsField("Side", QVariant.String)])
         river_sides.updateFields()
-        features = river_sides.getFeatures()
+
         river_sides.startEditing()
         river_sides_provider.changeAttributeValues({1: {0: 'right'}, 2: {0: 'left'}})
         river_sides.commitChanges()
@@ -361,8 +369,7 @@ class CurviCoord:
             provider.changeAttributeValues({feature.id(): {provider.fieldNameMap()['N']: N_coord}})
 
         if check_outlined_points > 0:
-            iface.messageBar().pushMessage("Warning!", '{} track points are outside of the river polygone! They have been deleted!'.format(check_outlined_points), level=Qgis.Warning,
-                                           duration=10)
+            iface.messageBar().pushMessage("Warning!", '{} track points are outside of the river polygone! They have been deleted!'.format(check_outlined_points), level=Qgis.Warning)
         pts_riverCS.commitChanges()
 
         QgsMessageLog.logMessage("Input points transformation completed successfully", 'Messages', level=Qgis.Info)
@@ -406,11 +413,7 @@ class CurviCoord:
             provider.changeAttributeValues({feature.id(): {provider.fieldNameMap()['N']: N_coord}})
 
         if check_outlined_points > 0:
-            self.log_list.append(
-                'Warning! {} grid points are outside of the river polygone!'.format(check_outlined_points))
-            if self.dlg.Elliptical_CheckBox.isChecked()== True:
-                self.log_list.append('These points have been deleted')
-            self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
+            iface.messageBar().pushMessage("Warning!", '{} grid points are outside of the river polygone!'.format(check_outlined_points), level=Qgis.Warning)
 
         regular_grid.commitChanges()
 
@@ -452,8 +455,7 @@ class CurviCoord:
 
     def create_grid(self):
         self.dlg.CreateGrid_PushButton.setEnabled(False)
-        self.log_list.append('Create regular point grid......')
-        self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
+        QgsMessageLog.logMessage("Creating regular point grid......", 'Messages', level=Qgis.Info)
         QCoreApplication.processEvents()
         point_spacing = self.dlg.PointSpacing_LineEdit.text()
         extent = self.dlg.Extent_Widget.outputExtent()
@@ -466,8 +468,7 @@ class CurviCoord:
             regular_grid.setName('Regular point grid sp.' + str(point_spacing)+'m.')
             QgsProject.instance().addMapLayer(regular_grid)
         except ValueError:
-            self.log_list.append('Point spacing should be a float value, abort....')
-            self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
+            iface.messageBar().pushMessage('Point spacing should be a float value, abort....', level=Qgis.Critical)
             pass
         self.dlg.CreateGrid_PushButton.setEnabled(True)
 
@@ -497,8 +498,7 @@ class CurviCoord:
     def interpolate(self):
 
         self.dlg.Interpolate_PushButton.setEnabled(False)
-        self.log_list.append('Interpolate points')
-        self.dlg.log_textbrowser.setText('\n'.join(self.log_list))
+        QgsMessageLog.logMessage("Interpolating data", 'Messages', level=Qgis.Info)
 
         grid_filename = self.dlg.InputGrid_Widget.filePath()
         measurements_filename = self.dlg.InputMeasurements_Widget.filePath()
