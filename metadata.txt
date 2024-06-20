@@ -12,7 +12,7 @@ email=freimansgy@gmail.com
 
 about=Plugin for conversion of river data (bathymetry, concentrations etc.) from Cartesian to Curvilinear coordinate system. It allows to perform interpolation in Curvilinear CS that improves accuracy significantly
 
-tracker=http://bugs
+tracker=https://github.com/zaarcvon/curvicoord/issues
 repository=https://github.com/zaarcvon/curvicoord
 # End of mandatory metadata
 
