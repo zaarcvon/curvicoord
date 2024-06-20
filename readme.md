@@ -8,7 +8,7 @@
 
 
 
-[Installation](#installation)•[Documentation](#documentation)•[Credits](#credits)•[License](#license)
+[Installation](#installation) • [Documentation](#documentation) • [Support](#support) • [License](#license)
 
 
 ## Installation 
