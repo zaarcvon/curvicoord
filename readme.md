@@ -8,7 +8,7 @@
 
 
 
-[Installation](#installation)•[Documentation](https://github.com/zaarcvon/curvicoord/edit/main/readme.md#documentation)•[Credits](#credits)•[License](#license)
+[Installation](#installation)•[Documentation](#documentation)•[Credits](#credits)•[License](#license)
 
 
 ## Installation 
