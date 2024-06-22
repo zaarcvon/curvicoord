@@ -203,17 +203,19 @@ class CurviCoord:
             self.dlg.Interpolate_PushButton.clicked.connect(self.interpolate)
             self.dlg.SN_Coordinates_RadioButton.toggled.connect(self.SN_coordinates_output)
             self.dlg.XY_Coordinates_RadioButton.toggled.connect(self.XY_coordinates_output)
+            self.dlg.InputMeasurements_Widget.fileChanged.connect(self.change_Field_comboBox)
         # Fetch the currently loaded layer
-        self.dlg.measurements_input.setFilters(QgsMapLayerProxyModel.PointLayer)
-        self.dlg.boundary_polygone_input.setFilters(QgsMapLayerProxyModel.PolygonLayer)
-        self.dlg.centerline_input.setFilters(QgsMapLayerProxyModel.LineLayer)
-        self.dlg.regular_grid_input.setFilters(QgsMapLayerProxyModel.PointLayer)
+            self.dlg.measurements_input.setFilters(QgsMapLayerProxyModel.PointLayer)
+            self.dlg.boundary_polygone_input.setFilters(QgsMapLayerProxyModel.PolygonLayer)
+            self.dlg.centerline_input.setFilters(QgsMapLayerProxyModel.LineLayer)
+            self.dlg.regular_grid_input.setFilters(QgsMapLayerProxyModel.PointLayer)
 
-        #dialogue stay always on top
-        self.dlg.setWindowFlags(Qt.WindowStaysOnTopHint)
-        #QgsFileWidget has mode Save instead of basic Open
-        self.dlg.OutputMeasurements_Widget.setStorageMode(QgsFileWidget.SaveFile)
-        self.dlg.OutputGrid_Widget.setStorageMode(QgsFileWidget.SaveFile)
+
+            #dialogue stay always on top
+            self.dlg.setWindowFlags(Qt.WindowStaysOnTopHint)
+            #QgsFileWidget has mode Save instead of basic Open
+            self.dlg.OutputMeasurements_Widget.setStorageMode(QgsFileWidget.SaveFile)
+            self.dlg.OutputGrid_Widget.setStorageMode(QgsFileWidget.SaveFile)
 
         self.bounding_polygone_generate_counts = 0
         self.river_centerline_generate_counts = 0
@@ -299,6 +301,7 @@ class CurviCoord:
         '''
         measurements_name = self.dlg.measurements_input.currentText()
         selectedmeasurements = QgsProject.instance().mapLayersByName(measurements_name)[0]
+        measurements_fieldnames = [field.name() for field in selectedmeasurements.fields()]
 
         boundary_polygone_name = self.dlg.boundary_polygone_input.currentText()
         selectedpolygone= QgsProject.instance().mapLayersByName(boundary_polygone_name)[0]
@@ -345,9 +348,9 @@ class CurviCoord:
                                                                          'OUTPUT': 'TEMPORARY_OUTPUT'})['OUTPUT']
         QgsMessageLog.logMessage("Performing attribute manipulation", 'Messages', level=Qgis.Info)
         # Dealing with column names
+        measurements_fieldnames.extend(['distance','distance_2','Side'])
         pts_riverCS = processing.run("native:retainfields", {'INPUT': pts_riverCS,
-                                                             'FIELDS': ['distance', 'distance_2', 'ELEVATION',
-                                                                        'Side'], 'OUTPUT': 'TEMPORARY_OUTPUT'})[
+                                                             'FIELDS': measurements_fieldnames, 'OUTPUT': 'TEMPORARY_OUTPUT'})[
             'OUTPUT']
         pts_riverCS = processing.run("native:renametablefield",
                                      {'INPUT': pts_riverCS, 'FIELD': 'distance', 'NEW_NAME': 'S',
@@ -476,11 +479,11 @@ class CurviCoord:
             pass
         self.dlg.CreateGrid_PushButton.setEnabled(True)
 
-    def idw(self, row, id_power=2, min_points = 1, max_points=500, aniso_ratio=1):
+    def idw(self, row, field_name, id_power=2, min_points = 1, max_points=500, aniso_ratio=1):
         calc_arr = np.zeros(shape=(len(self.measurements), 5))  # create an empty array shape of (total no. of observation * 4)
         calc_arr[:, 0] = self.measurements['S']  # First column will be Longitude of known data points.
         calc_arr[:, 1] = self.measurements['N']  # Second column will be Latitude of known data points.
-        calc_arr[:, 2] = self.measurements['ELEVATION']
+        calc_arr[:, 2] = self.measurements[field_name]
 
         # Weight value from idw formula " w = 1 / (d(x, x_i)^power + 1)"
         # >> constant 1 is to prevent int divide by zero when distance is zero.
@@ -515,10 +518,9 @@ class CurviCoord:
             epsilon = float(self.dlg.Epsilon_LineEdit.text())
         else:
             epsilon = 1
-        self.measurements = gpd.read_file(measurements_filename)
         grid = gpd.read_file(grid_filename)
-
-        grid['ELEV'] = grid.apply(self.idw, axis=1, args=(id_power, min_points, max_points, epsilon))
+        field_name = self.dlg.Field_comboBox.currentText()
+        grid[field_name] = grid.apply(self.idw, axis=1, args=(field_name, id_power, min_points, max_points, epsilon))
         grid.to_file(grid_filename)
         self.dlg.Interpolate_PushButton.setEnabled(True)
 
@@ -527,3 +529,10 @@ class CurviCoord:
 
     def XY_coordinates_output(self):
         self.output_format = 'XY'
+
+    def change_Field_comboBox(self):
+        measurements_filename = self.dlg.InputMeasurements_Widget.filePath()
+        self.measurements = gpd.read_file(measurements_filename)
+        for col in self.measurements.columns:
+            self.dlg.Field_comboBox.addItem(col)
+        pass
