@@ -126,7 +126,7 @@
       </rect>
      </property>
      <property name="title">
-      <string>1. Input</string>
+      <string>1. Input measurements</string>
      </property>
      <widget class="QgsMapLayerComboBox" name="measurements_input">
       <property name="geometry">
@@ -371,9 +371,9 @@
      <widget class="QgsFileWidget" name="OutputMeasurements_Widget" native="true">
       <property name="geometry">
        <rect>
-        <x>99</x>
+        <x>139</x>
         <y>25</y>
-        <width>371</width>
+        <width>331</width>
         <height>20</height>
        </rect>
       </property>
@@ -420,7 +420,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Output points:</string>
+       <string>Output measurements</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_17">
