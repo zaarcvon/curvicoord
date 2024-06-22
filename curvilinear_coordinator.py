@@ -244,19 +244,23 @@ class CurviCoord:
         measurements_layer = QgsProject.instance().mapLayersByName(measurements_name)[0]
         alpha = self.dlg.bounding_polygone_alpha_textfield.text()
         try:
-            float(alpha)
-            bounding_polygone = processing.run("qgis:concavehull", {'INPUT': measurements_layer,
-                                                                    'ALPHA': alpha,
-                                                                    'HOLES': False,
-                                                                    'NO_MULTIGEOMETRY': False,
-                                                                    'OUTPUT': 'TEMPORARY_OUTPUT'})['OUTPUT']
-            self.bounding_polygone_generate_counts += 1
-            bounding_polygone.setName('Bounding polygone v.' + str(self.bounding_polygone_generate_counts))
-            QgsProject.instance().addMapLayer(bounding_polygone)
+            alpha = float(alpha)
+            if alpha>1:
+                iface.messageBar().pushMessage("Algorithm failed!", "Alpha should be less or equal 1",
+                                               level=Qgis.Critical)
+            else:
+                bounding_polygone = processing.run("qgis:concavehull", {'INPUT': measurements_layer,
+                                                                        'ALPHA': alpha,
+                                                                        'HOLES': False,
+                                                                        'NO_MULTIGEOMETRY': False,
+                                                                        'OUTPUT': 'TEMPORARY_OUTPUT'})['OUTPUT']
+                self.bounding_polygone_generate_counts += 1
+                bounding_polygone.setName('Bounding polygone v.' + str(self.bounding_polygone_generate_counts))
+                QgsProject.instance().addMapLayer(bounding_polygone)
 
 
         except ValueError:
-            iface.messageBar().pushMessage("Algorithm failed!", "Alpha should be a float value", level=Qgis.Critical, duration=10)
+            iface.messageBar().pushMessage("Algorithm failed!", "Alpha should be a float value", level=Qgis.Critical)
             pass
 
         self.dlg.bounding_polygone_generate_button.setEnabled(True)
