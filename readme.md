@@ -30,6 +30,8 @@ Soon it will also be available on the [QGIS official repository](https://plugins
 Read documentation and troubleshooting on the <a href=https://github.com/zaarcvon/curvicoord/wiki>github WIKI</a>
 
 ## Support
+The plugin is very new, so it may hide a lot of bugs. Please feel free to contact us, and we will fix them soon.
+
 Questions and ask for help on [GitHub Discussions](https://github.com/zaarcvon/curvicoord/discussions/categories/q-a)<br>
 Suggest your ideas on the [forum](https://github.com/zaarcvon/curvicoord/discussions/categories/ideas)<br>
 Report a bug on [Issues page](https://github.com/zaarcvon/curvicoord/issues)
