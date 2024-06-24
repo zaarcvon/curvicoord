@@ -27,7 +27,7 @@ Soon it will also be available on the [QGIS official repository](https://plugins
 
 ## Documentation
 
-Read documentation on the <a href=https://github.com/zaarcvon/curvicoord/wiki>github WIKI</a>
+Read documentation and troubleshooting on the <a href=https://github.com/zaarcvon/curvicoord/wiki>github WIKI</a>
 
 ## Support
 Questions and ask for help on [GitHub Discussions](https://github.com/zaarcvon/curvicoord/discussions/categories/q-a)<br>
