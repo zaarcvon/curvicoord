@@ -14,8 +14,10 @@
 
 ## Installation 
 
-It is available on the [QGIS official repository](https://plugins.qgis.org/plugins/) and can be installed directly using Plugin manager in QGIS software. Another way to install is from a zip-archive with following steps: 
+It is available on the [QGIS official repository](https://plugins.qgis.org/plugins/) and can be installed directly using Plugin manager in QGIS software. 
+![image](https://github.com/user-attachments/assets/af26c049-d8bd-4805-a74d-a382a684e219)
 
+Another way to install is from a zip-archive with following steps: 
 1. Download zip file with the code.<br>
 ![image](https://github.com/zaarcvon/curvicoord/assets/34241342/5fac3bc3-1933-44bf-a367-27fe663fda96)<br><br>
 2. Open QGIS Plugin manager<br>
