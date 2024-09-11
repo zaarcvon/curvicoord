@@ -24,7 +24,7 @@
 
 
 
-Soon it will also be available on the [QGIS official repository](https://plugins.qgis.org/plugins/)
+It is available on the [QGIS official repository](https://plugins.qgis.org/plugins/)
 
 ## Documentation
 
